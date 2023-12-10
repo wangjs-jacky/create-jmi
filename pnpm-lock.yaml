@@ -5,9 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@types/node':
-    specifier: ^20.10.4
-    version: 20.10.4
+  cac:
+    specifier: ^6.7.14
+    version: registry.npmmirror.com/cac@6.7.14
   chalk:
     specifier: ^4.0.0
     version: registry.npmmirror.com/chalk@4.0.0
@@ -26,20 +26,20 @@ dependencies:
   prompts:
     specifier: ^2.4.2
     version: 2.4.2
-  typescript:
-    specifier: ^5.3.3
-    version: registry.npmmirror.com/typescript@5.3.3
 
 devDependencies:
-  cac:
-    specifier: ^6.7.14
-    version: registry.npmmirror.com/cac@6.7.14
+  '@types/node':
+    specifier: ^20.10.4
+    version: 20.10.4
   father:
     specifier: ^4.3.7
     version: registry.npmmirror.com/father@4.3.7(@types/node@20.10.4)(webpack@5.89.0)
   tsup:
     specifier: ^8.0.1
     version: registry.npmmirror.com/tsup@8.0.1(postcss@8.4.32)(typescript@5.3.3)
+  typescript:
+    specifier: ^5.3.3
+    version: registry.npmmirror.com/typescript@5.3.3
   vitest:
     specifier: ^1.0.2
     version: 1.0.2(@types/node@20.10.4)
@@ -77,6 +77,7 @@ packages:
     resolution: {integrity: sha512-D08YG6rr8X90YB56tSIuBaddy/UXAA9RKJoFvrsnogAum/0pmjkgi4+2nx96A330FmioegBWmEYQ+syqCFaveg==}
     dependencies:
       undici-types: 5.26.5
+    dev: true
 
   /@vitest/expect@1.0.2:
     resolution: {integrity: sha512-mAIo/8uddSWkjQMLFcjqZP3WmkwvvN0OtlyZIu33jFnwme3vZds8m8EDMxtj+Uzni2DwtPfHNjJcTM8zTV1f4A==}
@@ -545,6 +546,7 @@ packages:
 
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+    dev: true
 
   /universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
@@ -2923,7 +2925,6 @@ packages:
     name: cac
     version: 6.7.14
     engines: {node: '>=8'}
-    dev: true
 
   registry.npmmirror.com/call-bind@1.0.5:
     resolution: {integrity: sha512-C3nQxfFZxFRVoJoGKKI8y3MOEo129NQ+FgQ08iye+Mk4zNZZGdjfs06bVTr+DBSlA66Q2VEcMki/cUCP4SercQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/call-bind/-/call-bind-1.0.5.tgz}
@@ -7105,6 +7106,7 @@ packages:
     version: 5.3.3
     engines: {node: '>=14.17'}
     hasBin: true
+    dev: true
 
   registry.npmmirror.com/unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/unbox-primitive/-/unbox-primitive-1.0.2.tgz}

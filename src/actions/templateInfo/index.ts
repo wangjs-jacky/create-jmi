@@ -17,7 +17,6 @@ const filterDirs = (dirs: string[], prefix = "j-") => {
 export const getTemplateInfo = (ctxRef) => {
   const { prefix } = ctxRef.current;
   const dirs = readdirSync(TEMPLATEDS_DIR, "utf-8");
-  console.log("TEMPLATEDS_DIR", TEMPLATEDS_DIR);
 
   return filterDirs(dirs, prefix).reduce((pre, dir) => {
     const absDir = join(TEMPLATEDS_DIR, dir);
