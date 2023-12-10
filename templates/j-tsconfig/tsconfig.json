@@ -1,0 +1,51 @@
+{
+  /* ==== 识别的路径 ===== */
+  "files": [],
+  "include": [
+    "./**/*.d.ts",
+    "./**/*.ts",
+    "./**/*.tsx"
+  ],
+  "exclude": [],
+  "compilerOptions": {
+    /* ==== extends 继承基础配置 =====*/
+    // "extends": "./configs/base",
+    /* ==== 基本配置 ===== */
+    "rootDir": "src",
+    // "rootDirs": ["src/views", "generated/templates/views"], /* 将 ts 的内容进行展平，配置后直接以基准 */
+    "baseUrl": ".", /*  import “src/core” 会被转化为一个相对路径  import "./src/core"  */
+    "allowJs": true, /* 允许导入 .js 文件 */
+    "resolveJsonModule": true, /* 允许导入 .json 文件 */
+    "jsx": "react-jsx",
+    "paths": { /* 配置 alias */
+      "@/*": [
+        "src/*"
+      ],
+    },
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    /* ==== Type Check =====*/
+    "strict": true, /* 开启严格模式 */
+    "noImplicitAny": true, /* 非隐式 any  */
+    /* ==== 声明文件 ===== */
+    "emitDeclarationOnly": false, /* 只构建声明文件，而不会构建 .js 文件 */
+    "declaration": true, /* 生成 .d.ts 文件 */
+    "declarationMap": true, /* 声明映射 declaration map */
+    "sourceMap": true, /* 源映射 source map */
+    "skipLibCheck": true, /* 跳过对 .d.ts 文件的类型检查 */
+    /* ==== 构建产物相关(若采用 father 则可以删除如下配置) ===== */
+    "module": "esnext",
+    "target": "esnext",
+    "removeComments": false, /* 移除 comments  */
+    // "outDir": "dist",
+    "downlevelIteration": false, /* for...of 降级后遍历会存在问题， */
+    "moduleResolution": "bundler",
+    "importHelpers": true, /* 开启 ts 中的 polyfill 功能，辅助函数统一从 tslib 中导出 */
+    "noEmit": true, /* tsc --noEmit 执行构建过程，不产生构建产物 */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+  },
+}

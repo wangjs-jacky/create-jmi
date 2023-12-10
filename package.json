@@ -1,0 +1,40 @@
+{
+  "name": "create-jmi",
+  "version": "1.0.0",
+  "description": "模板代码快速创建脚手架",
+  "main": "index.js",
+  "scripts": {
+    "test:unit": "vitest run",
+    "test:force": "vitest run -u",
+    "watch": "father dev",
+    "build": "father build"
+  },
+  "bin": {
+    "jmi": "./bin/jmi.js"
+  },
+  "files": [
+    "bin",
+    "cjs",
+    "esm",
+    "templates"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "execa": "^8.0.1",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.3.10",
+    "mustache": "^4.2.0",
+    "prompts": "^2.4.2",
+    "cac": "^6.7.14"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "vitest": "^1.0.2",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "father": "^4.3.7"
+  }
+}
