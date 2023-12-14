@@ -1,12 +1,9 @@
 import { join } from "path";
 import { TEMPLATEDS_DIR } from "../../constants";
-import { readFileSync, readdirSync } from "fs";
+import { readdirSync } from "fs";
 import fse from "fs-extra";
-const prompts = require('prompts');
+import { select } from '@clack/prompts';
 
-/* 
-  
-*/
 const filterDirs = (dirs: string[], prefix = "j-") => {
   return dirs.filter((dir) => dir.startsWith(prefix))
 }
@@ -27,27 +24,23 @@ export const getTemplateInfo = (ctxRef) => {
   }, {})
 };
 
+
 /* 
   作用：往环境变量中注入 templates 文件夹
   后续中间件，可通过 context.originPackageJson 及 context.originVersion 获取
 */
 export const middleware_templateInfo = async (next, ctxRef) => {
   const templateInfo = getTemplateInfo(ctxRef);
-
   let templateName = ctxRef.current.templateName;
   if (!ctxRef.current.templateName) {
-    const { value } = await prompts({
-      type: 'select',
-      name: 'value',
+    templateName = await select({
       message: '请选择一个模板工程',
-      choices: Object.keys(templateInfo).map(template => ({
-        title: template,
-        description: templateInfo[template].description,
+      options: Object.keys(templateInfo).map(template => ({
+        label: template,
+        hint: templateInfo[template].description,
         value: template
       })),
-      initial: 0,
     });
-    templateName = value;
   }
 
   ctxRef.current = {

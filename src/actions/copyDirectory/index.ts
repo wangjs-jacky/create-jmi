@@ -1,9 +1,10 @@
 import fse from "fs-extra";
 import { globSync } from 'glob';
 import { join, relative } from "path";
-import chalk from "chalk";
-import { readFileSync, writeFileSync } from "fs";
+const chalk = require("chalk");
+import { existsSync, readFileSync, writeFileSync } from "fs";
 import Mustache from "mustache";
+import { cancel, confirm, isCancel } from '@clack/prompts';
 
 interface CopTplOpts {
   templatePath: string;
@@ -33,23 +34,38 @@ export interface CopyDirectoryOpts {
   silent?: boolean;
 }
 
-const copyDirectory = (opts: CopyDirectoryOpts) => {
+const copyDirectory = async (opts: CopyDirectoryOpts) => {
   const { sourceDir, targetDir, mustacheParams = {}, silent } = opts;
   const files = globSync("**/*", {
     cwd: sourceDir,
     nodir: true,
     /* 允许路径以 . 开头 */
     dot: true,
-    ignore: ['**/node_modules/**','meta.json'],
+    ignore: ['**/node_modules/**', 'meta.json'],
   })
 
-  files.forEach(file => {
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
     const absFile = join(sourceDir, file);
     const absTargetFile = join(targetDir, file);
-    /* fse.copySync 支持文件夹拷贝，但是不推荐使用，因为无法做多增量的拷贝操作 */
+
+    /* 如果存在提示是否 overwrite 覆盖 */
+    if (existsSync(absTargetFile)) {
+      const overwriteCopy = await confirm({
+        message: `${file} 文件已存在，是否需覆盖操作 ?`,
+        initialValue: true
+      });
+
+      if (isCancel(overwriteCopy)) {
+        cancel('Operation cancelled.');
+        process.exit(1);
+      }
+      if (!overwriteCopy) return;
+    }
 
     /* 当拷贝 tpl 结尾文件时，需支持转译 */
     if (file.endsWith('.tpl')) {
+      /* fse.copySync 支持文件夹拷贝，但是不推荐使用，因为无法做多增量的拷贝操作 */
       copyTpl({
         templatePath: absFile,
         targetPath: join(targetDir, file.replace(/\.tpl/, "")),
@@ -61,7 +77,8 @@ const copyDirectory = (opts: CopyDirectoryOpts) => {
       }
       fse.copySync(absFile, absTargetFile)
     }
-  })
+  }
+
   return files;
 }
 

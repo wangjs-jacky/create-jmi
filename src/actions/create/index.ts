@@ -1,6 +1,8 @@
 import { TEMPLATEDS_DIR } from "../../constants";
 import { join } from "path";
 import type { CopyDirectoryOpts } from "../copyDirectory";
+const chalk = require("chalk");
+/* 使用 prompts 解析 meta.json 字段 */
 const prompts = require('prompts');
 
 export const middleware_create = async (next, ctxRef) => {
@@ -18,14 +20,16 @@ export const middleware_create = async (next, ctxRef) => {
     return;
   }
 
-  const { questions = [] } = templateInfo[templateName];
+  const { questions = [], type } = templateInfo[templateName];
+
   const answers = await prompts(questions, {
     onCancel() {
+      chalk.red('Exit create-jmi')
       process.exit(1);
     },
   });
 
-  copyDirectory({
+  await copyDirectory({
     sourceDir: join(TEMPLATEDS_DIR, templateName),
     targetDir: targetDir || process.cwd(),
     mustacheParams: {
@@ -33,6 +37,11 @@ export const middleware_create = async (next, ctxRef) => {
       ...answers
     }
   })
+
+  ctxRef.current = {
+    ...ctxRef.current,
+    type: type,
+  }
 
   next();
 }
