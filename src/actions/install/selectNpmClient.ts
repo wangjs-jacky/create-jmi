@@ -1,6 +1,6 @@
-import { isCancel, outro, select } from "@clack/prompts";
-const chalk = require("chalk");
+import { isCancel, select } from "@clack/prompts";
 import { installWithNpmClient } from "./installWithNpmClient";
+import { exitPrompt } from "../../utils/exitPrompt";
 
 export enum ENpmClient {
   npm = 'npm',
@@ -12,11 +12,6 @@ export enum ERegistry {
   npm = 'https://registry.npmjs.com/',
   taobao = 'https://registry.npmmirror.com/',
 }
-
-const exitPrompt = () => {
-  outro(chalk.red('Exit create-jmi'));
-  process.exit(1);
-};
 
 export const selectNpmClient = async () => {
   const npmClient = await select({
@@ -61,7 +56,6 @@ const selectRegistry = async () => {
 export const middleware_install = async (next, ctxRef) => {
   let isProject = ctxRef.current?.type === "app";
 
-  debugger;
   /* 若非工程则直接跳过 */
   if (!isProject){
     next();

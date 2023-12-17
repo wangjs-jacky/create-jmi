@@ -50,17 +50,17 @@ const copyDirectory = async (opts: CopyDirectoryOpts) => {
     const absTargetFile = join(targetDir, file);
 
     /* 如果存在提示是否 overwrite 覆盖 */
-    if (existsSync(absTargetFile)) {
+    if (existsSync(absTargetFile.replace(/\.tpl$/, ""))) {
       const overwriteCopy = await confirm({
         message: `${file} 文件已存在，是否需覆盖操作 ?`,
         initialValue: true
       });
 
       if (isCancel(overwriteCopy)) {
-        cancel('Operation cancelled.');
+        cancel('操作取消！');
         process.exit(1);
       }
-      if (!overwriteCopy) return;
+      if (!overwriteCopy) continue;
     }
 
     /* 当拷贝 tpl 结尾文件时，需支持转译 */

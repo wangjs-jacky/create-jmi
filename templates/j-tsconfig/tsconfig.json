@@ -13,7 +13,7 @@
     /* ==== 基本配置 ===== */
     "rootDir": "src",
     // "rootDirs": ["src/views", "generated/templates/views"], /* 将 ts 的内容进行展平，配置后直接以基准 */
-    "baseUrl": ".", /*  import “src/core” 会被转化为一个相对路径  import "./src/core"  */
+    "baseUrl": ".", /*  import "src/core" 会被转化为一个相对路径  import "./src/core"  */
     "allowJs": true, /* 允许导入 .js 文件 */
     "resolveJsonModule": true, /* 允许导入 .json 文件 */
     "jsx": "react-jsx",
@@ -40,7 +40,7 @@
     "module": "esnext",
     "target": "esnext",
     "removeComments": false, /* 移除 comments  */
-    // "outDir": "dist",
+    "outDir": "dist",
     "downlevelIteration": false, /* for...of 降级后遍历会存在问题， */
     "moduleResolution": "bundler",
     "importHelpers": true, /* 开启 ts 中的 polyfill 功能，辅助函数统一从 tslib 中导出 */

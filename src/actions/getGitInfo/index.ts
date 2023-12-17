@@ -2,32 +2,6 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import { cancel, confirm, isCancel } from '@clack/prompts';
 
-export interface IGitInfo {
-  username: string;
-  email: string;
-}
-
-export const getGitInfo = async (): Promise<IGitInfo> => {
-  const { $ } = await import('execa');
-  try {
-    const [{ stdout: username }, { stdout: email }] = await Promise.all([
-      await $`git config --global user.name`,
-      await $`git config --global user.email`,
-    ]);
-
-    return {
-      username,
-      email,
-    }
-
-  } catch (e) {
-    return {
-      username: '',
-      email: '',
-    };
-  }
-};
-
 /* 初始化 Git 项目 */
 const initGit = async ({ shouldInitGit, cwd = process.cwd() }) => {
   if (shouldInitGit) {
@@ -67,13 +41,6 @@ export const middleware_getGitInfo = async (next, ctxRef) => {
   }
 
   await initGit({ shouldInitGit });
-
-  const { username, email } = await getGitInfo();
-
-  ctxRef.current = {
-    ...ctxRef.current,
-    gitInfo: { username, email }
-  };
 
   next();
 }
