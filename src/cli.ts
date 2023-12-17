@@ -7,6 +7,7 @@ export function run() {
   const cli = cac("jmi").version(version).help();
   cli
     .command("g [templateName]", "选择需要生成的模板,如果不选择则弹出所有 templates 下的文件夹模板")
+    .alias("generate")
     .allowUnknownOptions()
     .action((templateName: string, options: any = {}) => {
       const ctx = {
