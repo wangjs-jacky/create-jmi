@@ -1,0 +1,17 @@
+{
+  "description": "生成 commitlint 脚本",
+  "questions": [],
+  "packageJson": {
+    "scripts": {
+      "prepare": "husky install"
+    },
+    "devDependencies": {
+      "chalk": "^4.1.2",
+      "husky": "^8.0.3"
+    }
+  },
+  "middleware": [
+    "middleware_initGit",
+    "middleware_install"
+  ]
+}
