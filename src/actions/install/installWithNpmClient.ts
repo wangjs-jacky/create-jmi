@@ -28,7 +28,8 @@ export const installWithNpmClient = async ({
       case ENpmClient.pnpm:
         if (isPmp8) {
           /* 其中 -L 代表仅更新 lock 文件而不去修改 package.json 文件 */
-          await $({ cwd: cwd, stdio: "inherit" })`pnpm up -L --registry=${registry}`;
+          /* await $({ cwd: cwd, stdio: "inherit" })`pnpm up -L --registry=${registry}`; */
+          await $({ cwd: cwd, stdio: "inherit" })`pnpm i --registry=${registry}`;
         } else {
           await $({ cwd: cwd, stdio: "inherit" })`pnpm i --registry=${registry}`;
         }

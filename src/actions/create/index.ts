@@ -1,6 +1,7 @@
 import { TEMPLATEDS_DIR } from "../../constants";
 import { join } from "path";
 import type { CopyDirectoryOpts } from "../copyDirectory";
+import { updatePackageJson } from "../../utils/updatePackageJson";
 const chalk = require("chalk");
 /* 使用 prompts 解析 meta.json 字段 */
 const prompts = require('prompts');
@@ -20,7 +21,13 @@ export const middleware_create = async (next, ctxRef) => {
     return;
   }
 
-  const { questions = [], type } = templateInfo[templateName];
+  const { questions = [], type, packageJson: mergePackageJson, middleware = [] } = templateInfo[templateName];
+
+  /* 控制后续的插件 */
+  const middlewaresSetByMeta = middleware.reduce((pre, cur) => {
+    pre[cur] = true;
+    return pre;
+  }, {})
 
   const answers = await prompts(questions, {
     onCancel() {
@@ -38,9 +45,21 @@ export const middleware_create = async (next, ctxRef) => {
     }
   })
 
+  if (mergePackageJson) {
+    await updatePackageJson(ctxRef, mergePackageJson)
+  }
+
+  const middlewares = type === "app"
+    ? {
+      "middleware_install": true,
+      "middleware_initGit": true
+    }
+    : {}
+
   ctxRef.current = {
     ...ctxRef.current,
-    type: type,
+    ...middlewares,
+    ...middlewaresSetByMeta
   }
 
   next();

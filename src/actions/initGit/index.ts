@@ -16,17 +16,13 @@ const initGit = async ({ shouldInitGit, cwd = process.cwd() }) => {
   }
 }
 
-export const middleware_getGitInfo = async (next, ctxRef) => {
+export const middleware_initGit = async (next, ctxRef) => {
   let shouldInitGit = ctxRef.current.commandArgs?.git || existsSync(join(process.cwd(), '.git'));
 
-  let isProject = ctxRef.current?.type === "app";
-
-  /* 若非工程则直接跳过 */
-  if (!isProject){
+  if(!ctxRef.current?.["middleware_initGit"]){
     next();
-    return;
+    return; 
   }
-
 
   if (!shouldInitGit) {
     shouldInitGit = await confirm({

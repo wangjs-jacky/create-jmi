@@ -1,7 +1,7 @@
 import { extname, join } from "path";
 import { TEMPLATEDS_DIR } from "../../constants";
 import { existsSync, readdirSync } from "fs";
-import fse from "fs-extra";
+import { readJsonSync } from "fs-extra";
 import { isCancel, select } from '@clack/prompts';
 import { exitPrompt } from "../../utils/exitPrompt";
 
@@ -30,7 +30,7 @@ const generateMetaInfo = (absDir: string, ctxRef) => {
     if (!isMetaExist && existsSync(metaJSON)) {
       isMetaExist = true;
       if (extname(support) === ".json") {
-        content = fse.readJsonSync(metaJSON, { throws: false }) as metaJSONType;
+        content = readJsonSync(metaJSON) as metaJSONType;
       } else if (extname(support) === ".js") {
         content = require("../../../templates/j-vite/meta.js");
         if (typeof content === "function") {
@@ -69,6 +69,9 @@ export const getTemplateInfo = (ctxRef) => {
 export const middleware_templateInfo = async (next, ctxRef) => {
   const templateInfo = getTemplateInfo(ctxRef);
   let templateName = ctxRef.current.templateName;
+  if (templateName) {
+    templateName = templateName.startsWith("j-") ? templateName : "j-" + templateName;
+  }
 
   if (!ctxRef.current.templateName) {
     templateName = await select({

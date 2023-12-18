@@ -19,7 +19,7 @@ const basicCatchError = async (err: Error) => {
 
 
 export const compose = (middleware: any[], opts: ComposeOptsType = {}) => {
-  let { ctx = {}, cachError = basicCatchError } = opts;
+  const { ctx = {}, cachError = basicCatchError } = opts;
 
   /* 使用 ref 的方式，防止开发过程修改 环境变量的引用地址  */
   const ctxRef = { current: ctx };

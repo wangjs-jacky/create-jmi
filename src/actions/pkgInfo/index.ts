@@ -1,11 +1,12 @@
 import fse from "fs-extra";
-import { PACKAGE_ROOT } from "../../constants";
+import { join } from "path";
 
 /**
  * 获取当前package.json的版本号
  */
-export const getOriginPackageJson = () => {
-  const pkgJson = fse.readJsonSync(PACKAGE_ROOT, { throws: false });
+export const getOriginPackageJson = ({ cwd }) => {
+  const packageJsonPath = join(cwd, "package.json");
+  const pkgJson = fse.readJsonSync(packageJsonPath, { throws: false });
   return pkgJson;
 };
 
@@ -41,7 +42,9 @@ export const getGitInfo = async (): Promise<IGitInfo> => {
   后续中间件，可通过 context.originPackageJson 及 context.originVersion 获取
 */
 export const middleware_pkgInfo = async (next, ctxRef) => {
-  const originPackageJson = getOriginPackageJson();
+  const { cwd = process.cwd() } = ctxRef.current;
+  /* package.json info */
+  const originPackageJson = getOriginPackageJson({ cwd });
 
   const { username, email } = await getGitInfo();
 
@@ -49,7 +52,8 @@ export const middleware_pkgInfo = async (next, ctxRef) => {
     ...ctxRef.current,
     originVersion: originPackageJson?.version,
     originPackageJson: originPackageJson,
-    gitInfo: { username, email }
+    gitInfo: { username, email },
+    cwd
   };
 
   next();

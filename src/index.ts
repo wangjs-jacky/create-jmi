@@ -1,12 +1,15 @@
 import { compose } from "./core/compose";
 
 /* == middleswares 数组 == */
-import { middleware_pkgInfo } from "./actions/pkgInfo";
-import { middleware_templateInfo } from "./actions/templateInfo";
-import { middleware_copyDirectory } from "./actions/copyDirectory";
-import { middleware_create } from "./actions/create";
-import { middleware_getGitInfo } from "./actions/getGitInfo";
-import { middleware_install } from "./actions/install/selectNpmClient";
+import {
+  middleware_copyDirectory,
+  middleware_create,
+  middleware_initGit,
+  middleware_install,
+  middleware_pkgInfo,
+  middleware_templateInfo
+} from "./actions";
+
 const chalk = require("chalk");
 import { intro } from "@clack/prompts";
 
@@ -15,7 +18,7 @@ const middleware = [
   middleware_templateInfo,
   middleware_copyDirectory,
   middleware_create,
-  middleware_getGitInfo,
+  middleware_initGit,
   middleware_install
 ];
 
