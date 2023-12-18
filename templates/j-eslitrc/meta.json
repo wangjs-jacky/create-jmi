@@ -1,0 +1,14 @@
+{
+  "description": "生成 .eslitrc 配置文件",
+  "questions": [],
+  "packageJson": {
+    "devDependencies": {
+      "eslint": "~7.32.0",
+      "@umijs/fabric": "^3.0.0"
+    }
+  },
+  "middleware": [
+    "middleware_initGit",
+    "middleware_install"
+  ]
+}
