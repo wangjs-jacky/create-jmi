@@ -1,3 +1,13 @@
+## [1.0.2](https://github.com/wangjs-jacky/create-jmi/compare/v1.0.1...v1.0.2) (2023-12-28)
+
+
+### Features
+
+* 新增 code-snippets 模板 ([05dd65f](https://github.com/wangjs-jacky/create-jmi/commit/05dd65ff388b6e06e32b7bd8a9c4684caa0692ed))
+* 支持 meta.cjs js mjs json 等格式配置文件 ([e860482](https://github.com/wangjs-jacky/create-jmi/commit/e860482362887f1095d3288a636ae70f3e1803b9))
+
+
+
 ## 1.0.1 (2023-12-18)
 
 

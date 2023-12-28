@@ -10,3 +10,6 @@ export const PACKAGE_ROOT = join(PROJECT_ROOT, "package.json");
 
 /* 模板工程目录 */
 export const TEMPLATEDS_DIR = join(PROJECT_ROOT, "templates");
+
+/* meta 支持的类型 */
+export const METAFILES = ['meta.json', 'meta.js', 'meta.cjs', 'meta.mjs'];

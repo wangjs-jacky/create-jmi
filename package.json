@@ -1,6 +1,6 @@
 {
   "name": "create-jmi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "模板代码快速创建脚手架",
   "main": "index.js",
   "scripts": {
