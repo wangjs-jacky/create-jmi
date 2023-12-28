@@ -5,6 +5,7 @@ const chalk = require("chalk");
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import Mustache from "mustache";
 import { cancel, confirm, isCancel } from '@clack/prompts';
+import { METAFILES } from "../../constants";
 
 interface CopTplOpts {
   templatePath: string;
@@ -41,18 +42,18 @@ const copyDirectory = async (opts: CopyDirectoryOpts) => {
     nodir: true,
     /* 允许路径以 . 开头 */
     dot: true,
-    ignore: ['**/node_modules/**', 'meta.json'],
+    ignore: ['**/node_modules/**', ...METAFILES],
   })
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const absFile = join(sourceDir, file);
-    const absTargetFile = join(targetDir, file);
+    const absTargetFile = join(targetDir, file).replace(/\.tpl$/, "");
 
     /* 如果存在提示是否 overwrite 覆盖 */
-    if (existsSync(absTargetFile.replace(/\.tpl$/, ""))) {
+    if (existsSync(absTargetFile)) {
       const overwriteCopy = await confirm({
-        message: `${file} 文件已存在，是否需覆盖操作 ?`,
+        message: `${file.replace(/\.tpl$/, "")} 文件已存在，是否需覆盖操作 ?`,
         initialValue: true
       });
 

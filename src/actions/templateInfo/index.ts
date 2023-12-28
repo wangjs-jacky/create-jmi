@@ -1,5 +1,5 @@
 import { extname, join } from "path";
-import { TEMPLATEDS_DIR } from "../../constants";
+import { METAFILES, TEMPLATEDS_DIR } from "../../constants";
 import { existsSync, readdirSync } from "fs";
 import { readJsonSync } from "fs-extra";
 import { isCancel, select } from '@clack/prompts';
@@ -18,8 +18,8 @@ const filterDirs = (dirs: string[], prefix = "j-") => {
   return dirs.filter((dir) => dir.startsWith(prefix))
 }
 
-const generateMetaInfo = (absDir: string, ctxRef) => {
-  const supports = ["meta.js", "meta.json"];
+const generateMetaInfo = async (absDir: string, ctxRef) => {
+  const supports = METAFILES;
 
   let isMetaExist = false;
   let content = null;
@@ -31,8 +31,12 @@ const generateMetaInfo = (absDir: string, ctxRef) => {
       isMetaExist = true;
       if (extname(support) === ".json") {
         content = readJsonSync(metaJSON) as metaJSONType;
-      } else if (extname(support) === ".js") {
-        content = require("../../../templates/j-vite/meta.js");
+      } else if ([".js", ".cjs", ".mjs"].includes(extname(support))) {
+        if ([".js", ".cjs"].includes(extname(support))) {
+          content = require(metaJSON);
+        } else {
+          content = (await import(metaJSON)).default;
+        }
         if (typeof content === "function") {
           content = content(ctxRef);
         }
@@ -40,9 +44,9 @@ const generateMetaInfo = (absDir: string, ctxRef) => {
     }
   }
 
-  if (!isMetaExist) {
+  /* if (!isMetaExist) {
     console.error("dev: 请给 template 模板新增 meta.json 或 meta.ts 文件");
-  }
+  } */
 
   return content;
 }
@@ -50,24 +54,24 @@ const generateMetaInfo = (absDir: string, ctxRef) => {
 /**
  * 获取 templates 下的文件夹信息
  */
-export const getTemplateInfo = (ctxRef) => {
+export const getTemplateInfo = async (ctxRef, templateDir = TEMPLATEDS_DIR) => {
   const { prefix } = ctxRef.current;
-  const dirs = readdirSync(TEMPLATEDS_DIR, "utf-8");
+  const dirs = filterDirs(readdirSync(templateDir, "utf-8"), prefix);
+  
+  let pre = {};
 
-  return filterDirs(dirs, prefix).reduce((pre, dir) => {
-    const absDir = join(TEMPLATEDS_DIR, dir);
-    const content = generateMetaInfo(absDir, ctxRef);
+  for (let i = 0; i < dirs.length; i++) {
+    const dir = dirs[i];
+    const absDir = join(templateDir, dir);
+    const content = await generateMetaInfo(absDir, ctxRef);
     pre[dir] = content;
-    return pre;
-  }, {})
+  }
+
+  return pre;
 };
 
-/* 
-  作用：往环境变量中注入 templates 文件夹
-  后续中间件，可通过 context.originPackageJson 及 context.originVersion 获取
-*/
-export const middleware_templateInfo = async (next, ctxRef) => {
-  const templateInfo = getTemplateInfo(ctxRef);
+const getTemplate = async (ctxRef, templateDir) => {
+  const templateInfo = await getTemplateInfo(ctxRef, templateDir);
   let templateName = ctxRef.current.templateName;
   if (templateName) {
     templateName = templateName.startsWith("j-") ? templateName : "j-" + templateName;
@@ -88,10 +92,27 @@ export const middleware_templateInfo = async (next, ctxRef) => {
     }
   }
 
+  return {
+    templateName,
+    templateInfo,
+  }
+}
+
+export const middleware_templateInfo = async (next, ctxRef) => {
+  let templateInfo, templateName = ".", templateDir = join(TEMPLATEDS_DIR);
+  /* 说明不存在 meta.json 文件 */
+  do {
+    templateDir = join(templateDir, templateName);
+    const res = await getTemplate(ctxRef, templateDir);
+    templateInfo = res.templateInfo;
+    templateName = res.templateName;
+  } while (!templateInfo[templateName]);
+
   ctxRef.current = {
     ...ctxRef.current,
     templateName,
-    templateInfo: templateInfo
+    templateInfo,
+    templateDir
   };
 
   next();

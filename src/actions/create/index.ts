@@ -1,4 +1,3 @@
-import { TEMPLATEDS_DIR } from "../../constants";
 import { join } from "path";
 import type { CopyDirectoryOpts } from "../copyDirectory";
 import { updatePackageJson } from "../../utils/updatePackageJson";
@@ -7,13 +6,14 @@ const chalk = require("chalk");
 const prompts = require('prompts');
 
 export const middleware_create = async (next, ctxRef) => {
-  const { templateInfo, copyDirectory, templateName, targetDir, mustacheParams
+  const { templateInfo, copyDirectory, templateName, targetDir, templateDir, mustacheParams
   }: {
-    templateInfo: string,
-    templateName: string,
-    copyDirectory: (opts: CopyDirectoryOpts) => string[],
+    templateInfo: string;
+    templateName: string;
+    copyDirectory: (opts: CopyDirectoryOpts) => string[];
     targetDir: string;
     mustacheParams: any;
+    templateDir: string;
   } = ctxRef.current;
 
   if (!templateInfo[templateName]) {
@@ -37,7 +37,7 @@ export const middleware_create = async (next, ctxRef) => {
   });
 
   await copyDirectory({
-    sourceDir: join(TEMPLATEDS_DIR, templateName),
+    sourceDir: join(templateDir, templateName),
     targetDir: targetDir || process.cwd(),
     mustacheParams: {
       ...mustacheParams,
