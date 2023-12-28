@@ -1,5 +1,6 @@
 const { basename } = require("path");
-const metaInfo = (ctxRef) => {
+
+module.exports = (ctxRef) => {
   const { gitInfo } = ctxRef.current;
   const { username, email } = gitInfo || {};
 
@@ -27,6 +28,4 @@ const metaInfo = (ctxRef) => {
     ],
     "type": "app"
   }
-}
-
-module.exports = metaInfo;
+};

@@ -1,4 +1,16 @@
 {
   "description": "生成 viteset 配置文件",
-  "questions": []
+  "questions": [],
+  "packageJson": {
+    "scripts": {
+      "test:unit": "vitest run",
+      "test:force": "vitest run -u"
+    },
+    "devDependencies": {
+      "vitest": "^1.0.2"
+    }
+  },
+  "middleware": [
+    "middleware_install"
+  ]
 }
